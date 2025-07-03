@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout.jsx";
 import { Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
-
+import CardsContainer from "./CardsContainer/CardsContainer.jsx";
 export default function App() {
   useEffect(() => {
     // dispatch(session());
@@ -25,10 +25,7 @@ export default function App() {
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={null} />
-
-              <Route path="/" element={null} />
-
+              <Route index element={<CardsContainer></CardsContainer>} />
               <Route path="*" element={null} />
             </Route>
           </Routes>

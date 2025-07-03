@@ -5,9 +5,9 @@ import { Outlet } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <div className="bg-amber-50 sm:bg-blue-400 lg:bg-green-500 h-full">
+    <div className="flex flex-col items-center justify-between h-screen">
       <Header></Header>
-      <main>
+      <main className="flex flex-col items-center">
         <Outlet />
       </main>
       <Footer></Footer>
