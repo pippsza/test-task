@@ -8,7 +8,7 @@ export default function Header() {
     <header className=" p-6 w-full  flex justify-center">
       <Container>
         <div className="flex justify-between px-8 rounded-2xl text-center py-3 shadow-xl/50 shadow-black border-solid border">
-          <h1>Test-task</h1>
+          <h1>TEST-TASK</h1>
           <Navigation />
         </div>
       </Container>

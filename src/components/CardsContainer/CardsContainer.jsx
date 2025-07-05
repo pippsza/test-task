@@ -1,39 +1,52 @@
 import { useEffect, useState } from "react";
-import CardsList from "../CardsList/CardsList.jsx";
 import Container from "../Container/Container.jsx";
 import SearchBar from "../SearchBar/SearchBar.jsx";
-import css from "./CardsContainer.module.scss";
-import axios from "axios";
-import { InnerHtml } from "../InnerHtml/InnerHtml.jsx";
+import RenderPage from "../RenderPage/RenderPage.jsx";
+// import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAll } from "../../redux/cases/operations.js";
+import { selectCases, selectLoading } from "../../redux/cases/selectors.js";
+import Card from "../Card/Card.jsx";
+import Loader from "../Loader/Loader.jsx";
 
 export default function CardsContainer() {
-  const [data, setData] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `https://cyberpioneersinc.com/api/cases?limit=1`
-        );
-        // console.log(res.data);
-        setData(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  const items = useSelector(selectCases);
 
-    fetchData();
-  }, []);
+  const [data, setData] = useState();
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (data) {
-      console.log(data.docs[0].layout);
-    }
-  }, [data]);
+    dispatch(fetchAll());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setData(items.docs);
+  }, [items]);
+  const isLoading = useSelector(selectLoading);
+  console.log("isLoading", isLoading);
+  // useEffect(() => {
+  //   console.log("data:", data);
+  // }, [data]);
 
   return (
-    <Container>
-      {data && <InnerHtml data={data.docs[0].layout} />}
+    <>
+      {/* <RenderPage id="66e94124c2c7bc6026e930f7" /> */}
       {/* <SearchBar /> */}
-      {/* <CardsList /> */}
-    </Container>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        data &&
+        data.map((el) => (
+          <section
+            className={`text-center w-full mt-10 mb-10 flex justify-center content-center`}
+            style={{ height: el.meta.image.height }}
+            key={el.id}
+          >
+            <Card meta={el.meta} id={el.id} />
+          </section>
+        ))
+      )}
+    </>
   );
 }

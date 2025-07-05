@@ -14,13 +14,13 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fbfcf8;
+  background-color: #fff;
   color: #000;
 }
 
 ul,
 ol {
-  list-style: none;
+  /* list-style: none; */
   margin: 0;
   padding: 0;
 }

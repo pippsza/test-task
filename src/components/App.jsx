@@ -4,6 +4,9 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import CardsContainer from "./CardsContainer/CardsContainer.jsx";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import Loader from "./Loader/Loader.jsx";
+import RenderPage from "./RenderPage/RenderPage.jsx";
 export default function App() {
   useEffect(() => {
     // dispatch(session());
@@ -21,12 +24,13 @@ export default function App() {
           },
         }}
       />
-      <div className={css.mainApp}>
-        <Suspense fallback={<span className={css.loader}></span>}>
+      <div className="w-full h-full m-auto">
+        <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<CardsContainer></CardsContainer>} />
-              <Route path="*" element={null} />
+              <Route index element={<CardsContainer />} />
+              <Route path=":id" element={<RenderPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Suspense>
