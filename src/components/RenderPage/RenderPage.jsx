@@ -5,8 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../Loader/Loader.jsx";
 import { useParams } from "react-router-dom";
+import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
 const baseUrl = "https://cyberpioneersinc.com/";
-// ПО META БУДУ РЕНДЕРИТЬ КАРТОЧКИ НА ГЛАВНОЙ СТРАНИЦЕ!!!!
+
 const InnerLexicalText = ({ data }) => {
   if (!data) return null;
   const html = convertLexicalToHTML({ data });
@@ -77,33 +78,36 @@ const RenderBlock = (block) => {
 
 export default function RenderPage() {
   const { id } = useParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(false);
       try {
-        console.log(`${baseUrl}api/cases/${id}`);
         const res = await axios.get(`${baseUrl}api/cases/${id}`);
-        setData(res.data);
+        if (!res.data || Object.keys(res.data).length === 0) {
+          setError(true);
+        } else {
+          setData(res.data);
+        }
       } catch (err) {
-        console.log(err);
-        toast.error(err);
+        setError(true);
+        toast.error("Помилка завантаження данних.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
-  useEffect(() => {
-    // console.log(data);
-  }, [data]);
-  // const backgroundImage = data.backgroundImage.url;
-  const backgroundImage = null;
-  // console.log(baseUrl + backgroundImage);
+  if (loading) return <Loader />;
+  if (error) return <NotFoundPage />;
+
   return data ? (
-    <div
-      className="flex flex-col pt-8"
-      // style={{ backgroundImage: `url(${baseUrl + backgroundImage})` }}
-    >
+    <div className="flex flex-col pt-8">
       <div className="grid grid-cols-2 gap-28">
         <div className="flex flex-col gap-3.5">
           <h1 className="font-bold text-4xl">{data.title}</h1>

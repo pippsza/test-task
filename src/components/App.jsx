@@ -30,7 +30,6 @@ export default function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<CardsContainer />} />
               <Route path=":id" element={<RenderPage />} />
-              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Suspense>
