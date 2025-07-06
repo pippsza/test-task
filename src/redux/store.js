@@ -1,14 +1,29 @@
 import { configureStore } from "@reduxjs/toolkit";
-import filtersReducer from "./filters/slice";
 import casesReducer from "./cases/slice";
+import recentReducer from "./recent/slice";
+import storage from "redux-persist/lib/storage"; // localStorage
+import { persistReducer, persistStore } from "redux-persist";
+import { combineReducers } from "redux";
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["recent"],
+};
+
+const rootReducer = combineReducers({
+  cases: casesReducer,
+  recent: recentReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    cases: casesReducer,
-    filters: filtersReducer,
-  },
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
-store.subscribe(() => {
-  console.log("[GLOBAL STATE]", store.getState());
-});
+export const persistor = persistStore(store);

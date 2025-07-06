@@ -1,9 +1,24 @@
-.caseRichtext h1,
-.caseRichtext h2,
+.caseRichtext h1 {
+  font-weight: bold;
+  margin: 1.5em 0 0.5em 0;
+  font-size: large;
+}
+.caseRichtext h2 {
+  font-weight: bold;
+  margin: 1.5em 0 0.5em 0;
+  font-size: larger;
+}
 .caseRichtext h3 {
+  font-weight: large;
+  margin: 1.5em 0 0.5em 0;
+  font-size: medium;
+}
+.caseRichtext h4 {
+  font-size: large;
   font-weight: bold;
   margin: 1.5em 0 0.5em 0;
 }
+
 .caseRichtext p {
   margin: 1em 0;
 }
@@ -18,5 +33,5 @@
   margin: 1em 0 1em 2em;
 }
 .caseRichtext li {
-  margin: 0.3em 0;
+  margin: 1em 2em;
 }

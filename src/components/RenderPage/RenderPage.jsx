@@ -6,6 +6,9 @@ import toast from "react-hot-toast";
 import Loader from "../Loader/Loader.jsx";
 import { useParams } from "react-router-dom";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
+import { useDispatch } from "react-redux";
+import { setId } from "../../redux/recent/slice.js";
+import Container from "../Container/Container.jsx";
 const baseUrl = "https://cyberpioneersinc.com/";
 
 const InnerLexicalText = ({ data }) => {
@@ -22,7 +25,6 @@ const InnerLexicalText = ({ data }) => {
 const RenderBlock = (block) => {
   switch (block.blockType) {
     case "case-section":
-      console.log(block.content);
       return (
         <section>
           {block.content?.map((child) => (
@@ -33,7 +35,7 @@ const RenderBlock = (block) => {
 
     case "case-columns":
       return (
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2 gap-10">
           <div>
             {block.left?.map((child) => (
               <RenderBlock key={child.id} {...child} />
@@ -81,7 +83,7 @@ export default function RenderPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -96,26 +98,33 @@ export default function RenderPage() {
       } catch (err) {
         setError(true);
         toast.error("Помилка завантаження данних.");
+        throw new Error(err);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
+    dispatch(setId(id));
   }, [id]);
 
   if (loading) return <Loader />;
   if (error) return <NotFoundPage />;
 
   return data ? (
-    <div className="flex flex-col pt-8">
+    <Container>
+      <h1
+        className="font-bold block text-4xl mt-24
+      mb-15"
+      >
+        {data.title}
+      </h1>
       <div className="grid grid-cols-2 gap-28">
         <div className="flex flex-col gap-3.5">
-          <h1 className="font-bold text-4xl">{data.title}</h1>
           <p>{data.description}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-bold text-lg">Categories</p>
-          <ul className="list-disc marker:text-2xl marker:text-blue-500 pl-1.5">
+          <ul className="list-disc marker:text-2xl marker:text-blue-500">
             {data.category.map((categoryEl) => (
               <li key={categoryEl.id}>{categoryEl.title} </li>
             ))}
@@ -126,7 +135,7 @@ export default function RenderPage() {
       {data.layout.map((block) => (
         <RenderBlock key={block.id} {...block} />
       ))}
-    </div>
+    </Container>
   ) : (
     <Loader />
   );
