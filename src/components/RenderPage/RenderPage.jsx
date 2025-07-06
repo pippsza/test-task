@@ -26,7 +26,7 @@ const RenderBlock = (block) => {
   switch (block.blockType) {
     case "case-section":
       return (
-        <section>
+        <section className="my-6">
           {block.content?.map((child) => (
             <RenderBlock key={child.id} {...child} />
           ))}
@@ -35,13 +35,13 @@ const RenderBlock = (block) => {
 
     case "case-columns":
       return (
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
           <div>
             {block.left?.map((child) => (
               <RenderBlock key={child.id} {...child} />
             ))}
           </div>
-          <div style={{ flex: 1 }}>
+          <div className="mt-4 md:mt-0">
             {block.right?.map((child) => (
               <RenderBlock key={child.id} {...child} />
             ))}
@@ -54,7 +54,7 @@ const RenderBlock = (block) => {
 
     case "case-goals":
       return (
-        <div>
+        <div className="my-4">
           {block.content?.map((child) => (
             <RenderBlock key={child.id} {...child} />
           ))}
@@ -69,7 +69,7 @@ const RenderBlock = (block) => {
           alt={img.filename || ""}
           width={img.width}
           height={img.height}
-          className="w-full block mt-6 mb-6 rounded-lg"
+          className="w-full block mt-6 mb-6 rounded-lg object-cover max-h-60 sm:max-h-80 lg:max-h-[400px] border-[4px] "
         />
       );
 
@@ -112,19 +112,16 @@ export default function RenderPage() {
 
   return data ? (
     <Container>
-      <h1
-        className="font-bold block text-4xl mt-24
-      mb-15"
-      >
+      <h1 className="font-bold block text-2xl sm:text-3xl lg:text-4xl mt-10 sm:mt-16 mb-6 text-center">
         {data.title}
       </h1>
-      <div className="grid grid-cols-2 gap-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-28 mb-8">
         <div className="flex flex-col gap-3.5">
-          <p>{data.description}</p>
+          <p className="text-base sm:text-lg lg:text-xl">{data.description}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-bold text-lg">Categories</p>
-          <ul className="list-disc marker:text-2xl marker:text-blue-500">
+          <ul className="list-disc marker:text-2xl marker:text-blue-500 ml-5">
             {data.category.map((categoryEl) => (
               <li key={categoryEl.id}>{categoryEl.title} </li>
             ))}

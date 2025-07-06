@@ -30,7 +30,7 @@ export default function CardsContainer() {
         data.map((el) => {
           return (
             <section
-              className={`relative text-center w-full mb-4 last:mb-0 lex bg-cover justify-center content-center
+              className={`relative text-center w-full mb-4 last:mb-0 lex bg-cover justify-center C content-center
               before:absolute before:inset-0 before:content-[''] before:pointer-events-none
               before:z-0 before:from-black/100 before:to-black/10 before:bg-gradient-to-br
               h-80 z-0`}
